@@ -235,6 +235,7 @@ MCP 실패 시에만 `/run-phase` 스킬에 명시된 폴백을 사용한다.
 | `regex:` | `regex: {경로} :: {정규식}` | 파일 내 정규식 매칭 (플래그 미지원) |
 | `json:` | `json: {경로} :: .{dot-path}[={값}]` | JSON 경로 존재/값 확인 (배열 인덱스 미지원) |
 | `coverage:` | `coverage: {경로} :: {임계값}` | 라인 커버리지 임계값 확인 (% 선택) |
+| `ut:` | `ut: {report 경로} :: S4=0,S3<=2` | AI 사용성 테스트 결과 Severity 임계값 (v1.6.0+) |
 
 > `json:` 타입 예: `json: package.json :: .scripts.build` (존재 확인)
 > `json: package.json :: .name=my-app` (값 일치 확인)
@@ -425,6 +426,7 @@ MCP 실패 시에만 `/run-phase` 스킬에 명시된 폴백을 사용한다.
 | `d2a-mcp-server/` | D2A 하네스 MCP 서버 (TypeScript) |
 | `specs/.template/` | spec.md, plan.md, tasks.md 템플릿 |
 | `specs/.template/VERSION` | 템플릿 버전 및 변경 이력 |
+| `work-analysis/` | 3층 구조 근거층 — 디폴트 개선의 단일 근거. `DESIGN-FLOW-COMPARISON.md` + `baseline-defaults/` 동결 스냅샷 (v1.6.0+) |
 | `scripts/log-activity.sh` | 활동 로그 기록 |
 | `scripts/notify-slack.sh` | 슬랙 알림 발송 |
 | `scripts/setup-https.sh` | 로컬 HTTPS + Caddy 게이트키퍼 1회 셋업 (Stage 1.6) |
@@ -469,7 +471,8 @@ MCP 실패 시에만 `/run-phase` 스킬에 명시된 폴백을 사용한다.
 | `/analyze-integrations` | 외부 연동 시스템 분석 |
 | `/run-spike` | 기술 검증 PoC 실행 |
 | `/design-research` | 디자인 시스템 리서치 워크플로 |
-| `/ui-design-workflow` | PRD→상태설계→목업→승인→0-드리프트 React 전사 워크플로 |
+| `/ui-design-workflow` | PRD→0단계 게이트→3안 발산→확정 락→상태설계→자가점검→0-드리프트 전사→AI UT 게이트 (v1.6.0+) |
+| `/ai-usability-test` | Playwright + 3 페르소나 + Nielsen 휴리스틱. D2A storageState 자동 통합, MCP `ut:` done 기준 |
 | `/generate-context-docs` | 디렉토리별 CONTEXT.md 자동 생성 |
 | `/internal-doc-survey` | 사내 정책 문서 수집 |
 | `/update-policy-refs` | 정책 갱신 및 코드 영향 분석 |

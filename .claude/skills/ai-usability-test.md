@@ -2,7 +2,7 @@
 name: ai-usability-test
 description: AI 네이티브 사용성 테스트. Playwright + 다중 페르소나로 UI 결함을 자동 탐지하고 Nielsen 휴리스틱 기반 개선안을 산출한다. "사용성 테스트", "UT 돌려줘", "UI 결함 찾아줘", "접근성 검사", "UX 검증해줘" 등의 요청에 적용.
 source: https://brunch.co.kr/@ghidesigner/492
-last_updated: 2026-06-23
+last_updated: 2026-06-23 (D2A storageState 통합 + ui-design-workflow STEP 5.5 게이트 진입점 명시)
 ---
 
 # AI 네이티브 사용성 테스트 (AI-Native Usability Test)
@@ -26,19 +26,53 @@ last_updated: 2026-06-23
 
 ---
 
-## Step 0: 대상 확인
+## 진입점
+
+이 스킬은 두 가지 경로로 진입된다:
+
+| 경로 | 시점 | 자동/수동 |
+|---|---|---|
+| **A** `ui-design-workflow` STEP 5.5 게이트 | UI 구현 빌드 통과 직후 | **자동** — run-phase 종료 직전 |
+| **B** 사용자 명시 호출 | UI 변경 후 회귀 검증, 배포 전 체크 | 수동 (`ai-usability-test 실행해줘`) |
+
+경로 A에선 Step 0 대상 확인을 건너뛰고 `state.json` 의 `current_phase` + spec.md `페이지 목록` 으로 자동 셋업.
+
+## Step 0: 대상 확인 (경로 B 또는 자동 셋업 실패 시)
 
 ```
 🔶 사용성 테스트 대상 확인
 
 **테스트할 화면**: {사용자가 지정 or 현재 프로젝트 메인 화면}
 **테스트 URL**: {local-{프로젝트}.nexon.com/{경로} 또는 사용자 지정}
+**인증 모드**: {storageState 자동 / 게스트 / 익명}
 **특이 사항**: {기존 storageState 사용 여부, 게스트 허용 여부 등}
 
 이대로 진행할까요?
 ```
 
 → 확인 후 `specs/{NNN}/ut/` 디렉토리 생성.
+
+### D2A 인증 통합 — storageState 자동 재사용
+
+D2A 표준 인증 파이프라인이 셋업된 프로젝트에선 별도 로그인 시뮬레이션 불필요:
+
+```javascript
+// run-ut.mjs — D2A storageState 재사용 패턴
+const authStatePath = 'tests/e2e/.auth/user.json';  // create-spec Step 2.7 산출물
+const context = await browser.newContext({
+  viewport: { width: 1440, height: 900 },
+  storageState: fs.existsSync(authStatePath) ? authStatePath : undefined,
+});
+```
+
+**storageState 만료 검사** (`scripts/save-auth-state.sh` 재실행 필요 시):
+- 만료된 경우 UT가 로그인 화면으로 리다이렉트되어 모든 시나리오 실패
+- run-ut.mjs 시작 시 첫 페이지 로드 후 URL이 `signin.nexon.com` / `nxas.nexon.com` 으로 가면 즉시 중단 + "save-auth-state.sh 재실행 필요" 보고
+
+**인증 프로필별 호스트** (Stage 1.6-A 결정값 기반 자동 선택):
+- `insign` / `insign-with-nxas` → `https://local-{project}.nexon.com`
+- `nxas` / `custom` → `https://local-{project}.nxgd.io`
+- `none` → `https://local-{project}.test`
 
 ---
 
@@ -381,6 +415,35 @@ jobs:
 ```
 
 ---
+
+## Step 6.5: Phase 게이트 통합 (MCP done 기준)
+
+D2A MCP 하네스의 `submit_task` done 기준에 `ut:` 타입을 추가해 Phase 완료 조건에 UT 통과를 명시한다.
+
+### tasks.md done 형식
+
+```yaml
+done:
+  - cmd: npm run build
+  - ut: specs/{NNN}/ut/UT_FINDINGS_REPORT.md :: S4=0,S3<=2
+```
+
+### 검증 로직 (의사 코드)
+
+```typescript
+// d2a-mcp-server validate_task_done — ut: 타입 핸들러
+function validateUtCriteria(reportPath: string, criteria: string): boolean {
+  const report = readFile(reportPath);
+  const counts = parseExecutiveSummary(report);   // S4/S3/S2/S1 카운트 추출
+  const rules = parseCriteria(criteria);           // "S4=0,S3<=2" 파싱
+  return rules.every(rule => evaluate(counts, rule));
+}
+```
+
+### 통합 결과
+- Phase 말미 자동 검증 — S4 1건이라도 있으면 Phase 완료 차단
+- S3 임계 초과 시 BLOCKED 처리 → `collaboration-tracker.md` 자동 등록
+- 통과 시 `submit_task` 정상 진행
 
 ## Step 7: 결과 보고 및 다음 단계
 
