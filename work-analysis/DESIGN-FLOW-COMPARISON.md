@@ -1,6 +1,6 @@
 # DESIGN-FLOW-COMPARISON — 디폴트 vs 실제 작업 흐름 갭 분석
 
-> **출처**: AiDitor 작업 분석 (2026-06-19) + NEXON STREAM 작업 검증 (2026-06-23)
+> **출처**: 선행 작업 분석 (2026-06-19) + NEXON STREAM 작업 검증 (2026-06-23)
 > **목적**: 디폴트 흐름(template + skills)이 실제 효과적 흐름과 어디가 어긋났는지 1:1 매핑.
 
 ## 비교표 (11개 갭)
@@ -43,7 +43,7 @@
 | AI 사용성 테스트 자동 게이트 | NEXON 2026-06-23 | `create-spec.md` | Step 2.7.5 |
 | D2A storageState 통합 | NEXON 2026-06-23 | `ai-usability-test.md` | Step 0 D2A 인증 통합 |
 | MCP done 기준 `ut:` 타입 | NEXON 2026-06-23 | `ai-usability-test.md` | Step 6.5 |
-| 시안 제출 전 자가점검 7항 | AiDitor v1.6.0 | `ui-design-workflow.md` | §4.5 / STEP 4.5 |
+| 시안 제출 전 자가점검 7항 | 선행 작업 v1.6.0 | `ui-design-workflow.md` | §4.5 / STEP 4.5 |
 
 ## 미완·일반화 검증 필요 항목
 
@@ -56,4 +56,4 @@
 ## 변경 로그
 
 - **2026-06-23**: NEXON STREAM 작업으로 갭 7·9 본격 흡수 + AI UT 통합. v1.6.0+ 패치.
-- **2026-06-19**: AiDitor 작업에서 11개 갭 최초 식별 (v1.6.0 디폴트층 8개 흡수).
+- **2026-06-19**: 선행 작업에서 11개 갭 최초 식별 (v1.6.0 디폴트층 8개 흡수).

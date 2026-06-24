@@ -5,9 +5,9 @@ released: 2026-06-23
 
 ## 변경 이력
 
-### 1.6.0 (2026-06-23) — AiDitor v1.6.0 흡수 + NEXON STREAM 검증
-- `ui-design-workflow.md` **§3.5 확정 락** 신설: git 태그(mockup-stage-{NNN}) + PNG 회귀 baseline + DS 실측 스왑 (AiDitor 갭 ⑦⑧ 흡수)
-- `ui-design-workflow.md` **§6.5 DS 실측 스왑 패스** 신설: 가정값 vs 실측값 비교 → mismatch 자동 교체 + 로그 (AiDitor 갭 ⑨, "가정 `#355bf7` ≠ 실제 `#57a0ff`" 트랩 차단)
+### 1.6.0 (2026-06-23) — 선행 작업 v1.6.0 흡수 + NEXON STREAM 검증
+- `ui-design-workflow.md` **§3.5 확정 락** 신설: git 태그(mockup-stage-{NNN}) + PNG 회귀 baseline + DS 실측 스왑 (선행 작업 갭 ⑦⑧ 흡수)
+- `ui-design-workflow.md` **§6.5 DS 실측 스왑 패스** 신설: 가정값 vs 실측값 비교 → mismatch 자동 교체 + 로그 (선행 작업 갭 ⑨, "가정 `#355bf7` ≠ 실제 `#57a0ff`" 트랩 차단)
 - `ui-design-workflow.md` **§4.5 / STEP 4.5 자가점검 게이트** 신설: 시안 제출 전 7항 셀프 체크 (안내 문구·필수 요소·기준 토큰·폭 일치·이름 충돌·밀도·SSOT)
 - `ui-design-workflow.md` **STEP 5.5 AI UT 게이트** 신설: Playwright + 3 페르소나(라이트/코어/접근성) + Nielsen 휴리스틱 자동 결함 탐지
 - `ui-design-workflow.md` STEP 5 보강: 확정 락 baseline PNG와 시각 회귀 비교 추가
