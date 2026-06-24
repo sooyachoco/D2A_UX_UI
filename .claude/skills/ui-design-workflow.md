@@ -353,11 +353,14 @@ mkdir -p design/baseline
 ### 스왑 패스 절차
 
 ```bash
-# 1. design-direction.md 에 추측된 토큰 값을 적는다 (예: Primary 500 = #355bf7)
+# 1. design-direction.md 에 추측된 토큰 값을 적는다 (예: color-pc-500 = #355bf7)
 # 2. 실제 DS 출처에서 같은 토큰을 자동 추출
-#    - NX Basic 1.0v: refs/design-systems/nxbasic-1.0v.md 또는 Storybook WebFetch
+#    - NX Basic 1.0v: nxbasic-mcp `search_design_tokens` 우선 (정확한 토큰명·값 반환)
+#      예) search_design_tokens(query="pc", category="colors") → color-pc-500=#6babff
+#      폴백: refs/design-systems/nxbasic-1.0v.md 또는 Storybook WebFetch
 #    - 외부 DS: design/samples.html 의 실제 CSS 변수 인스펙트
 # 3. 두 값을 비교 → 다르면 design-direction.md 값을 실제값으로 교체
+#    ※ 토큰명을 step 번호까지 정확히 (pc-500 ≠ pc-600). MCP가 이 라벨 오류를 예방한다.
 # 4. 교체 이력을 design/baseline/ds-swap-log.md 에 기록
 ```
 
@@ -366,13 +369,17 @@ mkdir -p design/baseline
 ```markdown
 | 토큰 | 가정값 | 실측값 | 출처 | 날짜 |
 |---|---|---|---|---|
-| Primary 500 | #355bf7 | #57a0ff | Storybook colors.css | 2026-06-23 |
-| Text 1 | #17191c | (일치) | NX Basic 토큰 | 2026-06-23 |
+| color-pc-500 | #355bf7 | #6babff | nxbasic-mcp | 2026-06-24 |
+| color-pc-600 | #57a0ff | (일치) | nxbasic-mcp | 2026-06-24 |
+| color-tc-1 | #17191c | (일치) | nxbasic-mcp | 2026-06-24 |
+
+> ⚠️ 토큰명은 step 번호까지 정확히 적는다. 과거 수동 기록에서 `#57a0ff`(=pc-600)를
+> "Primary 500"으로 라벨링한 오류가 있었다 — MCP 조회는 이 혼동을 원천 차단한다.
 ```
 
 ### 강제 규칙
 - design-direction.md 색상 표에 **모든 행이 swap pass 완료** 표시되기 전엔 STEP 5 진입 불가
-- nxbasic 토큰은 `refs/design-systems/nxbasic-1.0v.md` 가 source of truth — 추측 금지
+- nxbasic 토큰의 source of truth 는 **nxbasic-mcp `search_design_tokens`** (정확한 토큰명·값) — 추측 금지. `refs/design-systems/nxbasic-1.0v.md` 는 인덱스, Storybook WebFetch 는 폴백.
 - 신규 커스텀 토큰은 `design/samples.html` 의 실제 인스펙트 결과만 허용
 
 > 선행 작업 v1.6.0 갭 ⑨ 흡수. "DS 적용: 스왑 패스로 실측 — 추측 금지"
@@ -383,7 +390,7 @@ mkdir -p design/baseline
 
 > **주의**: 이 섹션의 토큰 값은 NDS(Nexon Design System) 라이트 모드 기준이다.
 > 프로젝트별 디자인 시스템에 맞게 교체한다:
-> - **NX Basic 1.0v**: `refs/design-systems/nxbasic-1.0v.md` 참조
+> - **NX Basic 1.0v**: nxbasic-mcp 우선 (`list_components` / `get_component_docs` / `search_design_tokens`). 인덱스: `refs/design-systems/nxbasic-1.0v.md`
 > - **NDS**: 아래 값 그대로 사용
 > - **커스텀**: `design/design-direction.md`에 확정된 값 사용
 

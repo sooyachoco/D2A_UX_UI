@@ -57,7 +57,7 @@
 | **A-1b 유저 인증** | `refs/gamescale-docs/public/docs/ko/service-integration/authentication/` 참조. |
 | **B-1 클라우드** | AI가 서비스 특성(사내/외부, 규모, 리전)에 맞게 제안. 사용자 확인 후 확정. |
 | **F-6 UI 프레임워크** | 사용자 지정이 없으면 AI가 프로젝트에 맞는 후보를 제시, 사용자가 선택. |
-| **F-7 디자인 시스템** | PRD에 NX Basic 키워드(`NX Basic`/`nxbasic`)가 있으면 `DESIGN_SYSTEM=nxbasic`으로 디자인 리서치를 건너뛰고 UI 프로토타입 직행. 없으면 디자인 리서치 단계에서 NX Basic을 리서치 결과와 함께 선택지로 제시. 참조: `refs/design-systems/nxbasic-1.0v.md` (MCP 미등록, Storybook WebFetch 조회). |
+| **F-7 디자인 시스템** | PRD에 NX Basic 키워드(`NX Basic`/`nxbasic`)가 있으면 `DESIGN_SYSTEM=nxbasic`으로 디자인 리서치를 건너뛰고 UI 프로토타입 직행. 없으면 디자인 리서치 단계에서 NX Basic을 리서치 결과와 함께 선택지로 제시. 컴포넌트·토큰 조회는 **nxbasic-mcp 우선** (`list_components`/`get_component_docs`/`search_design_tokens` — 엔드포인트 `https://nxbasic-mcp.sooyachoco.workers.dev/mcp`). 인덱스: `refs/design-systems/nxbasic-1.0v.md`, 폴백: Storybook WebFetch. |
 
 ### 아키텍처 원칙
 

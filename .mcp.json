@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "d2a-harness": {
+      "command": "node",
+      "args": ["./d2a-mcp-server/dist/index.js"]
+    },
+    "nxbasic-mcp": {
+      "type": "http",
+      "url": "https://nxbasic-mcp.sooyachoco.workers.dev/mcp"
+    }
+  }
+}
