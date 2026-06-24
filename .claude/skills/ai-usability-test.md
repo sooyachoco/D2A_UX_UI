@@ -37,6 +37,18 @@ last_updated: 2026-06-23 (D2A storageState 통합 + ui-design-workflow STEP 5.5 
 
 경로 A에선 Step 0 대상 확인을 건너뛰고 `state.json` 의 `current_phase` + spec.md `페이지 목록` 으로 자동 셋업.
 
+## Step 0.5: 단일 SOURCE 로드 (페르소나·여정 — 재정의 금지)
+
+페르소나와 사용자 여정은 이 스킬에서 **새로 만들지 않는다.** 상류 리서치 산출물을 읽어온다.
+
+| 로드 파일 | 사용처 | 부재 시 |
+|---|---|---|
+| `refs/ux-research/PERSONA.md` | Step 1-2 페르소나 3종 | 폴백: 아래 기본 3종(초보자/파워유저/접근성) 사용 + "PERSONA.md 미존재 — 가정 기반" 경고 |
+| `refs/ux-research/USER_JOURNEY_MAP.md` | Step 2 시나리오 도출 | 폴백: spec.md/PRD 페이지 목록에서 시나리오 추출 |
+
+규약: `refs/ux-research/README.md`의 "단일 SOURCE 규약". 두 파일이 있으면 **반드시 그 내용을 권위 있는 정의로 사용**하고, UT 산출물에서 `PERSONA.md#P1` 형태로 역링크한다.
+신뢰도 🔵(가설)인 페르소나로 UT 를 돌리면 UT_FINDINGS_REPORT Executive Summary 에 "가정 기반 — 인터뷰 검증 전" 을 명시한다.
+
 ## Step 0: 대상 확인 (경로 B 또는 자동 셋업 실패 시)
 
 ```
@@ -87,13 +99,19 @@ spec.md / PRD에서 다음을 추출한다:
 - 개념 인증(conceptual validation) 목표: "이 기능을 왜 쓰는지 명확한가"
 - 전환 최적화 목표: 핵심 전환 단계별 이탈 예상 지점
 
-### 1-2. 페르소나 3종 정의
+### 1-2. 페르소나 3종 — `PERSONA.md`에서 로드 (재정의 금지)
 
-| 페르소나 | 정의 | Playwright 시뮬레이션 전략 |
+Step 0.5 에서 읽은 `refs/ux-research/PERSONA.md` 의 P1/P2/P3 을 그대로 매핑한다.
+PERSONA.md 의 `UT 시뮬레이션 매핑` 행이 곧 Playwright 행동 전략이다.
+
+| PERSONA.md | UT 페르소나 | Playwright 시뮬레이션 전략 (PERSONA.md 매핑 행 사용) |
 |---|---|---|
-| **초보자** | 첫 방문, 목표 불명확, 도움말 의존 | 느린 클릭·hover 많이·에러 발생 시 방황 |
-| **파워유저** | 단축키·스킵 시도, 효율 최우선 | 빠른 클릭·키보드·직접 경로 탐색 |
-| **접근성 사용자** | 스크린리더 환경, 키보드 전용 내비 | Tab/Enter/Arrow 전용, ARIA 확인 |
+| P1 | **초보자** | 느린 클릭·hover 많이·에러 발생 시 방황 |
+| P2 | **파워유저** | 빠른 클릭·키보드·직접 경로 탐색 |
+| P3 | **접근성 사용자** | Tab/Enter/Arrow 전용, ARIA 확인 |
+
+> `PERSONA.md` 부재 시에만 위 기본값을 직접 사용하고 "가정 기반" 경고를 남긴다.
+> 페르소나를 이 문서에서 새로 정의하지 않는다 — 변경은 `PERSONA.md`에서만.
 
 ### 1-3. 성공 기준
 
@@ -139,6 +157,10 @@ spec.md / PRD에서 다음을 추출한다:
 `specs/{NNN}/ut/UT_SCENARIOS.md` 생성.
 
 ### 시나리오 작성 원칙
+
+> **시드 출처**: Step 0.5 에서 읽은 `refs/ux-research/USER_JOURNEY_MAP.md` 의
+> "페르소나별 핵심 경로 (→ UT 시나리오 시드)" 표와 ⚠ 결정 순간(이탈 지점)에서 시나리오를 도출한다.
+> 여정맵의 ⚠ 표시 터치포인트는 **이탈 지점 집중 관찰 대상**으로 시나리오에 반드시 포함한다.
 
 - **현실적 맥락**: "버튼을 클릭하세요" 대신 "오늘 오후 발표자료에 쓸 배너를 만들어야 합니다"
 - **목표 중심**: 인터페이스 언급 없이 사용자 목표만 기술
@@ -477,6 +499,7 @@ function validateUtCriteria(reportPath: string, criteria: string): boolean {
 
 | 스킬 | 역할 | 이 스킬과의 관계 |
 |---|---|---|
+| `refs/ux-research/` (상류 source) | 페르소나·여정 단일 정의 (brunch 493) | **상류** — Step 0.5 에서 `PERSONA.md`·`USER_JOURNEY_MAP.md` 를 읽어 페르소나·시나리오를 채운다 |
 | `ai-usability-test` (이 스킬) | Playwright 자동화 — 기술적·반복적 결함 1차 탐지 | — |
 | `design:accessibility-review` | WCAG 기준 심층 접근성 리뷰 | **이 스킬 이후** 접근성 S4/S3 이슈가 있을 때 2차로 실행 |
 | `design:design-critique` | 주관적 디자인 품질 피드백 (위계·일관성) | 병렬 실행 가능. 이 스킬은 자동화, critique는 정성 평가 |
