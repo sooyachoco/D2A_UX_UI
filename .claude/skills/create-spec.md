@@ -184,8 +184,9 @@ Primary 컬러: {값}
 > 방향 정의에 없는 레이아웃 요소를 AI 임의로 추가하는 것은 금지한다.
 
 > **DESIGN_SYSTEM = nxbasic 확인**: `state.json.design_system == "nxbasic"` 이거나
-> `design-direction.md` 의 "디자인 시스템" 항목이 NX Basic 이면, 디자인 리서치를 거치지 않고
-> 바로 이 UI 프로토타입으로 진입한 경로다. 아래 **NX Basic 구현 규칙**을 함께 적용한다.
+> `design-direction.md` 의 "디자인 시스템" 항목이 NX Basic 이면, 웹 디자인 리서치 없이
+> (NX Basic 토큰 고정·레이아웃 3종 샘플 비교·선택을 거쳐) 이 UI 프로토타입으로 진입한 경로다.
+> 색·타이포·컴포넌트는 NX Basic 토큰, 레이아웃은 선택된 샘플 방향을 따른다. 아래 **NX Basic 구현 규칙**을 함께 적용한다.
 
 ### 구현 규칙
 

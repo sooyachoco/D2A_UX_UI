@@ -17,10 +17,11 @@ AI 내장 지식이 아닌 실제 어워드급 사이트의 최신 트렌드를 
 
 리서치 검색을 시작하기 전에, 넥슨 사내 디자인 시스템(NX Basic 1.0v) 적용 여부를 먼저 확인한다.
 
-1. **이미 확정된 경우 — 이 스킬을 종료한다.**
+1. **이미 확정된 경우 — 웹 리서치를 종료한다.**
    `state.json.design_system == "nxbasic"` 이거나 `DESIGN_SYSTEM=nxbasic` 이면,
-   디자인 방향은 NX Basic 토큰으로 이미 확정된 상태다. 웹 리서치(Step 1~4)를 수행하지 않고
-   `boilerplate-setup` [NX Basic 직행] 절차(또는 이미 작성된 `design-direction.md`)를 그대로 둔다.
+   디자인 방향은 NX Basic 토큰으로 이미 확정된 상태다. 웹 리서치(Step 1~4)는 수행하지 않는다.
+   디자인 샘플 3종(레이아웃 비교)은 `boilerplate-setup` [NX Basic 샘플 3종] 절차에서 NX Basic 토큰을
+   고정한 채 생성·선택되므로, 그 결과(`design/samples.html`, `design/design-direction.md`)를 그대로 둔다.
 
 2. **미확정인 경우 — 리서치 결과와 함께 선택지로 제시한다.**
    `refs/design-systems/nxbasic-1.0v.md` 를 읽어 NX Basic 개요(컴포넌트 18종·토큰 144개·Storybook)를
@@ -109,7 +110,7 @@ AI 내장 지식이 아닌 실제 어워드급 사이트의 최신 트렌드를 
 
   N) NX Basic 1.0v 디자인 시스템 적용 (넥슨 사내 디자인 시스템)
      - 컴포넌트 18종(Button·TextField·Table·Dialog 등) + 토큰 144개를 그대로 사용
-     - 일관된 사내 표준 UI, 별도 디자인 리서치 불필요
+     - 웹 디자인 리서치는 생략하되, NX Basic 토큰을 고정한 채 레이아웃만 다른 샘플 3종으로 비교·선택
      - Storybook: https://sooyachoco.github.io/NXbasic1.0v/?path=/docs/introduction--docs
      - 참조: refs/design-systems/nxbasic-1.0v.md
 
@@ -118,7 +119,7 @@ R / N 중 선택해주세요.
 
 **선택 결과 처리:**
 - **R 선택** → Step 4 를 리서치 기반 시그니처로 작성한다.
-- **N 선택** → `DESIGN_SYSTEM=nxbasic` 로 확정하고 아래를 수행한 뒤 Step 4 를 NX Basic 토큰으로 작성한다:
+- **N 선택** → `DESIGN_SYSTEM=nxbasic` 로 확정하고 아래를 수행한다. 디자인 샘플 3종(NX Basic 토큰 고정·레이아웃 변주) 생성·선택은 `boilerplate-setup` [NX Basic 샘플 3종] 절차를 따르며, Step 4 를 NX Basic 토큰 + 선택된 레이아웃으로 작성한다:
   ```
   mcp__d2a-harness__update_state({ patch: { design_system: "nxbasic" } })
   ```
@@ -147,7 +148,8 @@ R / N 중 선택해주세요.
 - 모션 토큰
 
 > **N(NX Basic) 선택 시**: 색상·타이포·여백·컴포넌트 스타일은 NX Basic 토큰 값을 그대로 옮긴다.
-> 디자인 시스템을 따르는 것이 목표이므로 임의 변주를 추가하지 않는다
+> 디자인 시스템을 따르는 것이 목표이므로 색상·타이포에는 임의 변주를 추가하지 않는다
 > (`design-quality-guard` 의 "기본 테마 그대로 사용 금지" 규칙은 NX Basic 토큰 준수로 갈음).
+> 단, **레이아웃·구성은 샘플 3종 중 사용자가 선택한 방향**을 "선택된 디자인 샘플" 항목에 기록한다.
 
 → "디자인 방향이 확정되었습니다. `boilerplate-setup 실행해줘`를 입력해 Stage 1.5에서 UI 구현을 시작할까요?"

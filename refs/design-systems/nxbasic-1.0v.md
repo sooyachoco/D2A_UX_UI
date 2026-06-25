@@ -55,7 +55,7 @@ Pagination · Radio · Search · Tab · Table · Tag · TextField · Toggle · T
 
 이 디자인 시스템을 사용할지 여부는 두 경로로 결정된다.
 
-### 1. PRD 키워드 자동 감지 → 디자인 리서치 건너뛰기
+### 1. PRD 키워드 자동 감지 → 웹 리서치만 생략, 샘플 3종은 NX Basic 토큰으로 생성
 
 PRD(기획 문서) 본문에 다음 키워드 중 하나가 등장하면 `DESIGN_SYSTEM = nxbasic` 로 판정한다
 (대소문자·공백 무시):
@@ -66,8 +66,9 @@ PRD(기획 문서) 본문에 다음 키워드 중 하나가 등장하면 `DESIGN
 - `nxbasic-mcp`
 
 판정 시:
-- `boilerplate-setup` Stage 1 **Q5\*(디자인 샘플 생성·선택)** 와 **Stage 1.5(웹 디자인 리서치)** 를 **건너뛴다.**
-- 대신 NX Basic 토큰/컴포넌트를 기준으로 `design/design-direction.md` 를 채우고 곧장
+- **Stage 1.5(웹 디자인 리서치)** 는 **건너뛴다.** 시각 DNA의 출처가 NX Basic 디자인 시스템이므로 외부 레퍼런스 리서치는 수행하지 않는다.
+- **Stage 1 Q5\*(디자인 샘플 생성·선택)는 건너뛰지 않는다.** 색상·타이포·컴포넌트는 NX Basic 토큰/18종을 그대로 고정하되, **레이아웃·구성(진입 영역·정보 밀도·배치)만 다른 디자인 샘플 3종**을 `design/samples.html` 로 생성하여 사용자가 비교·선택한다. (`ui-design-workflow` §3 "레이아웃 안 3개 발산"과 동일 취지 — NX Basic 토큰으로 발산)
+- 선택된 레이아웃 방향과 NX Basic 토큰을 `design/design-direction.md` 에 채운 뒤 곧장
   `create-spec` Step 2.7(UI 프로토타입)으로 향한다.
 - 결정은 `decisions.md` `DESIGN_SYSTEM` 항목 + `state.json.design_system` 에 기록한다.
 
