@@ -1,0 +1,10 @@
+
+# D2A harness — MCP 상태·세션·토큰 (로컬 전용)
+.claude/state.json
+.claude/session-stamp
+.claude/traces/
+# 로컬 MCP 설정 (경로가 머신마다 다름)
+.mcp.json
+# 사내 민감 문서
+refs/company-policies/
+refs/gamescale-docs/

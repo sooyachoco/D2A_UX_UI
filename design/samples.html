@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXON Live — NX Basic 레이아웃 샘플 3종</title>
+<style>
+/* ============================================================
+   NX Basic 1.0v 토큰 고정 (nxbasic-mcp 조회값) — 자유 색상/폰트 탐색 금지
+   ============================================================ */
+:root{
+  /* point color (brand) */
+  --pc-100:#ecf1f9; --pc-200:#cce2ff; --pc-400:#8fbfff; --pc-500:#6babff;
+  --pc-600:#57a0ff; --pc-700:#3d91ff; --pc-800:#0a74ff; --pc-900:#0056c7; --pc-1000:#1e4b85;
+  /* basic color (neutral) */
+  --bc-100:#e8ebf2; --bc-200:#d2d6e0; --bc-300:#c6ccd7; --bc-400:#b1b7c4;
+  --bc-500:#a1a7b5; --bc-600:#8f96a3; --bc-700:#747a86; --bc-800:#51555d; --bc-900:#3d4148; --bc-1000:#17191c;
+  /* semantic */
+  --primary:var(--pc-800); --primary-hover:var(--pc-900); --primary-pressed:var(--pc-1000);
+  --text:var(--bc-1000); --text-sub:var(--bc-700); --text-strong:var(--bc-1000);
+  --border:var(--bc-300); --border-soft:var(--bc-200);
+  --surface:#fcfcfd; --surface-muted:#f9fafb; --white:#fff;
+  --danger:#ef5d5d; --success:#59e387; --warning:#ffbb00;
+  --radius:8px; --radius-lg:12px;
+  --font:"Pretendard","Pretendard Variable",-apple-system,"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bc-100);line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* ---- 상단 탭 바 (A/B/C 전환) ---- */
+#tab-bar{position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;background:var(--bc-1000);
+  display:flex;align-items:center;gap:4px;padding:0 20px;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+#tab-bar .brand{color:#fff;font-weight:800;letter-spacing:-.02em;margin-right:18px;font-size:15px}
+#tab-bar .brand b{color:var(--pc-600)}
+#tab-bar button{color:var(--bc-400);font-size:13px;font-weight:600;padding:8px 14px;border-radius:6px;transition:.15s}
+#tab-bar button:hover{color:#fff;background:rgba(255,255,255,.08)}
+#tab-bar button[aria-selected="true"]{color:#fff;background:var(--primary)}
+#tab-bar .note{margin-left:auto;color:var(--bc-500);font-size:11px}
+
+.sample{display:none;padding-top:56px;min-height:100vh}
+.sample.active{display:block}
+.wrap{max-width:1440px;margin:0 auto;width:100%}
+
+/* ---- 공통 컴포넌트 (NX Basic 매핑) ---- */
+.nx-btn{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:var(--radius);
+  font-size:14px;font-weight:700;background:var(--primary);color:#fff;transition:.15s}
+.nx-btn:hover{background:var(--primary-hover)}
+.nx-btn:active{background:var(--primary-pressed)}
+.nx-btn.sm{height:32px;padding:0 12px;font-size:13px}
+.nx-btn.ghost{background:var(--bc-100);color:var(--text)}
+.nx-btn.ghost:hover{background:var(--bc-200)}
+.nx-btn.outline{background:transparent;color:var(--primary);box-shadow:inset 0 0 0 1.5px var(--primary)}
+.nx-tag{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:11px;
+  font-size:11px;font-weight:700}
+.tag-live{background:var(--danger);color:#fff}
+.tag-soft{background:var(--pc-100);color:var(--pc-900)}
+.nx-card{background:var(--white);border:1px solid var(--border-soft);border-radius:var(--radius-lg)}
+.muted{color:var(--text-sub)}
+
+/* ---- 라이브 플레이어 (공통) ---- */
+.player{position:relative;background:linear-gradient(135deg,#0d1b30,#0a1424);border-radius:var(--radius-lg);
+  overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+.player .scene{position:absolute;inset:0;background:
+  radial-gradient(60% 80% at 30% 20%,rgba(10,116,255,.35),transparent),
+  radial-gradient(50% 60% at 80% 90%,rgba(87,160,255,.25),transparent)}
+.player .play{position:relative;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.14);
+  backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;transition:.2s}
+.player .play:hover{background:rgba(255,255,255,.24);transform:scale(1.06)}
+.player .topbar{position:absolute;top:12px;left:12px;right:12px;display:flex;gap:8px;align-items:center;z-index:2}
+.player .botbar{position:absolute;bottom:0;left:0;right:0;padding:14px 14px 12px;z-index:2;
+  background:linear-gradient(transparent,rgba(0,0,0,.6));display:flex;align-items:center;gap:10px}
+.player .botbar .sp{flex:1}
+.icon-btn{width:34px;height:34px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;
+  color:#fff;background:rgba(255,255,255,.12);transition:.15s}
+.icon-btn:hover{background:rgba(255,255,255,.25)}
+.quality{color:#fff;font-size:12px;font-weight:700;background:rgba(255,255,255,.14);padding:5px 9px;border-radius:7px}
+.viewers{color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px}
+
+/* 검증 페인포인트 ① 첫 진입 음소거 안내 (쇼케이스 설문 S5) */
+.mute-coach{position:absolute;z-index:3;left:50%;bottom:64px;transform:translateX(-50%);
+  background:var(--pc-800);color:#fff;font-size:13px;font-weight:700;padding:9px 14px;border-radius:20px;
+  display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(10,116,255,.45);white-space:nowrap;
+  animation:bob 1.8s ease-in-out infinite}
+.mute-coach::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:12px;height:12px;background:var(--pc-800)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+
+/* ---- 채팅 (검증 페인포인트 ② 시인성: 닉네임 색 구분·본인 강조·충분한 대비) ---- */
+.chat{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border-soft);border-radius:var(--radius-lg);overflow:hidden}
+.chat .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border-soft);font-weight:700;font-size:14px}
+.chat .body{flex:1;overflow:auto;padding:10px 14px;display:flex;flex-direction:column;gap:9px;min-height:0}
+.msg{font-size:14px;line-height:1.45;color:var(--text)}
+.msg .nick{font-weight:800;margin-right:6px}
+.msg.me{background:var(--pc-100);border-left:3px solid var(--primary);padding:6px 9px;border-radius:6px}
+.msg.mod .nick{color:#fff;background:var(--primary);padding:1px 7px;border-radius:10px;font-size:12px}
+.msg.mod{background:var(--surface-muted);padding:7px 9px;border-radius:6px;border:1px dashed var(--pc-400)}
+.nick-a{color:#0a74ff}.nick-b{color:#c98a00}.nick-c{color:#0f9d58}.nick-d{color:#b5436b}
+.chat .pinned{display:flex;gap:8px;align-items:flex-start;background:var(--pc-100);margin:10px 14px 0;padding:9px 11px;border-radius:8px;font-size:13px;color:var(--pc-900)}
+.chat .ft{padding:10px 12px;border-top:1px solid var(--border-soft);display:flex;gap:8px;align-items:center}
+.chat .ft input{flex:1;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:14px;font-family:inherit}
+.chat .ft input:focus{outline:2px solid var(--pc-400);border-color:var(--primary)}
+.msg .report{visibility:hidden;font-size:11px;color:var(--bc-600);margin-left:6px}
+.msg:hover .report{visibility:visible}
+.msg .report:hover{color:var(--danger);text-decoration:underline}
+
+/* 검증 페인포인트 ④ 인터랙션·도네이션 바 */
+.react-bar{display:flex;gap:8px;align-items:center;padding:10px 12px;border-top:1px solid var(--border-soft);flex-wrap:wrap}
+.react{width:36px;height:36px;border-radius:50%;background:var(--bc-100);font-size:17px;display:inline-flex;align-items:center;justify-content:center;transition:.15s}
+.react:hover{background:var(--pc-100);transform:translateY(-2px)}
+.donate{margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:18px;
+  background:linear-gradient(135deg,var(--pc-700),var(--pc-900));color:#fff;font-weight:800;font-size:13px;transition:.15s}
+.donate:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+h1,h2,h3{letter-spacing:-.02em;color:var(--text-strong)}
+.sec-h{font-size:13px;font-weight:800;color:var(--text-sub);text-transform:uppercase;letter-spacing:.04em}
+
+/* ============================================================
+   샘플 A — 사이드바 + 콘텐츠 (3-column 클래식 스트리밍)
+   ============================================================ */
+#A .grid{display:grid;grid-template-columns:72px 1fr 340px;gap:0;min-height:calc(100vh - 56px)}
+#A .rail{background:var(--white);border-right:1px solid var(--border-soft);padding:16px 0;display:flex;flex-direction:column;align-items:center;gap:6px}
+#A .rail a{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--text-sub);transition:.15s;position:relative}
+#A .rail a:hover{background:var(--pc-100);color:var(--primary)}
+#A .rail a.on{background:var(--primary);color:#fff}
+#A .rail .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pc-500),var(--pc-900));margin-top:auto}
+#A .main{padding:20px 24px;overflow:auto}
+#A .side{background:var(--white);border-left:1px solid var(--border-soft);display:flex;flex-direction:column}
+#A .meta{display:flex;gap:12px;align-items:center;margin:14px 2px 6px}
+#A .meta .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff8a3d,#ff3d77);flex:none}
+#A .meta h2{font-size:17px}
+#A .chips{display:flex;gap:8px;margin:14px 0 4px;flex-wrap:wrap}
+
+/* ============================================================
+   샘플 B — 벤토 그리드 (player hero + 타일 모자이크)
+   ============================================================ */
+#B .pad{padding:22px 24px}
+#B .bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(96px,auto);gap:14px}
+#B .b-player{grid-column:span 8;grid-row:span 3}
+#B .b-chat{grid-column:span 4;grid-row:span 5;display:flex}
+#B .b-chat .chat{flex:1}
+#B .b-tile{padding:16px;display:flex;flex-direction:column;gap:8px}
+#B .b-donate{grid-column:span 4;grid-row:span 2;background:linear-gradient(135deg,var(--pc-700),var(--pc-1000));color:#fff;justify-content:space-between}
+#B .b-donate h3{color:#fff}
+#B .b-info{grid-column:span 4}
+#B .b-clip{grid-column:span 4}
+#B .b-sched{grid-column:span 4}
+#B .b-tile .big{font-size:26px;font-weight:800}
+#B .clip-thumb{height:64px;border-radius:8px;background:linear-gradient(135deg,#16263f,#0a1424);position:relative}
+#B .clip-row{display:flex;gap:10px}
+#B .clip-row>div{flex:1}
+
+/* ============================================================
+   샘플 C — 분할 스크린 (대형 플레이어 + 탭 패널)
+   ============================================================ */
+#C .split{display:grid;grid-template-columns:1fr 400px;gap:0;min-height:calc(100vh - 56px)}
+#C .left{padding:24px 28px;overflow:auto;background:var(--surface-muted)}
+#C .right{background:var(--white);border-left:1px solid var(--border-soft);display:flex;flex-direction:column}
+#C .tabs{display:flex;border-bottom:1px solid var(--border-soft)}
+#C .tabs button{flex:1;height:48px;font-size:13px;font-weight:700;color:var(--text-sub);position:relative}
+#C .tabs button[aria-selected="true"]{color:var(--primary)}
+#C .tabs button[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--primary)}
+#C .pane{flex:1;display:none;flex-direction:column;min-height:0}
+#C .pane.on{display:flex}
+#C .title-row{display:flex;gap:14px;align-items:flex-start;margin:18px 0}
+#C .title-row .av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#8a3dff,#3d6bff);flex:none}
+#C .stat{display:flex;gap:22px;margin:16px 0}
+#C .stat .n{font-size:22px;font-weight:800}
+#C .donate-pane{padding:16px;display:flex;flex-direction:column;gap:12px}
+#C .amt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#C .amt button{height:46px;border-radius:8px;border:1.5px solid var(--border);font-weight:800;font-size:14px;color:var(--text);transition:.15s}
+#C .amt button:hover{border-color:var(--primary);color:var(--primary);background:var(--pc-100)}
+
+footer.legend{max-width:1440px;margin:0 auto;padding:18px 24px;color:var(--bc-700);font-size:12px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ 상단 탭 바 ============ -->
+<nav id="tab-bar" role="tablist" aria-label="디자인 샘플 전환">
+  <span class="brand">NEXON<b>Live</b></span>
+  <button role="tab" aria-selected="true" data-t="A">샘플 A · 사이드바</button>
+  <button role="tab" aria-selected="false" data-t="B">샘플 B · 벤토</button>
+  <button role="tab" aria-selected="false" data-t="C">샘플 C · 분할</button>
+  <span class="note">NX Basic 1.0v 토큰 고정 · 레이아웃만 비교</span>
+</nav>
+
+<!-- ============ 샘플 A : 사이드바 + 콘텐츠 ============ -->
+<section class="sample active" id="A" role="tabpanel">
+  <div class="grid">
+    <!-- 좌측 레일 -->
+    <aside class="rail">
+      <a class="on" title="홈" aria-label="홈"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg></a>
+      <a title="라이브" aria-label="라이브"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M5 5a10 10 0 000 14M19 5a10 10 0 010 14"/></svg></a>
+      <a title="팔로우" aria-label="팔로우"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+      <a title="클립" aria-label="클립"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></a>
+      <div class="av" title="내 계정"></div>
+    </aside>
+
+    <!-- 메인 -->
+    <main class="main">
+      <div class="player">
+        <div class="scene"></div>
+        <div class="topbar">
+          <span class="nx-tag tag-live">● LIVE</span>
+          <span class="viewers"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg> 12,840</span>
+        </div>
+        <button class="play" aria-label="재생"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></button>
+        <!-- 검증 ① 첫 진입 음소거 안내 -->
+        <div class="mute-coach" id="muteA">🔇 소리가 꺼져 있어요 — 탭하여 켜기</div>
+        <div class="botbar">
+          <button class="icon-btn" aria-label="음소거 해제"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 9v6h4l5 5V4L8 9H4z"/></svg></button>
+          <span class="sp"></span>
+          <span class="quality">1080p ▾</span>
+          <button class="icon-btn" aria-label="전체화면"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="av"></div>
+        <div style="flex:1">
+          <h2>퍼스트 디센던트 신규 시즌 쇼케이스</h2>
+          <p class="muted" style="font-size:13px">넥슨 공식 · 게임 · 한국어</p>
+        </div>
+        <button class="nx-btn">+ 팔로우</button>
+      </div>
+      <div class="chips">
+        <span class="nx-tag tag-soft"># 신규시즌</span>
+        <span class="nx-tag tag-soft"># 디센던트</span>
+        <span class="nx-tag tag-soft"># 공식방송</span>
+      </div>
+    </main>
+
+    <!-- 우측 채팅 -->
+    <aside class="side">
+      <div class="chat" style="border:none;border-radius:0;flex:1">
+        <div class="hd">실시간 채팅 <span class="muted" style="font-weight:600;font-size:12px">3,201명 대화 중</span></div>
+        <div class="pinned"><b>📌 공지</b><span>19시 신규 캐릭터 첫 공개 + 넥슨캐시 룰렛 이벤트!</span></div>
+        <div class="body">
+          <div class="msg mod"><span class="nick">운영자</span>곧 본 방송 시작합니다 🎉</div>
+          <div class="msg"><span class="nick nick-a">레인저K</span>오늘 신캐 나온다는데 실화냐</div>
+          <div class="msg"><span class="nick nick-b">디센던트팬</span>화질 진짜 좋다 1080p 선명함<a class="report" href="#">신고</a></div>
+          <div class="msg"><span class="nick nick-c">초보시청자</span>이거 어디서 후원하나요?<a class="report" href="#">신고</a></div>
+          <div class="msg me"><span class="nick nick-d">나</span>기대된다 🔥</div>
+          <div class="msg"><span class="nick nick-a">레인저K</span>ㄱㄱ</div>
+        </div>
+        <!-- 검증 ④ 인터랙션 + 도네이션 -->
+        <div class="react-bar">
+          <button class="react" aria-label="하트">❤️</button>
+          <button class="react" aria-label="웃음">😆</button>
+          <button class="react" aria-label="박수">👏</button>
+          <button class="donate"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5-8-11a4 4 0 018-1 4 4 0 018 1c0 6-8 11-8 11z"/></svg> 넥슨캐시 후원</button>
+        </div>
+        <div class="ft">
+          <input placeholder="채팅을 입력하세요" aria-label="채팅 입력">
+          <button class="nx-btn sm">전송</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 샘플 B : 벤토 그리드 ============ -->
+<section class="sample" id="B" role="tabpanel">
+  <div class="wrap pad">
+    <div class="bento">
+      <!-- 플레이어 -->
+      <div class="b-player player" style="aspect-ratio:auto">
+        <div class="scene"></div>
+        <div class="topbar">
+          <span class="nx-tag tag-live">● LIVE</span>
+          <span class="viewers"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg> 12,840</span>
+        </div>
+        <button class="play" aria-label="재생"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></button>
+        <div class="mute-coach" id="muteB">🔇 소리가 꺼져 있어요 — 탭하여 켜기</div>
+        <div class="botbar"><button class="icon-btn" aria-label="음소거 해제"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 9v6h4l5 5V4L8 9H4z"/></svg></button><span class="sp"></span><span class="quality">1080p ▾</span></div>
+      </div>
+
+      <!-- 채팅 -->
+      <div class="b-chat">
+        <div class="chat">
+          <div class="hd">실시간 채팅</div>
+          <div class="body">
+            <div class="msg mod"><span class="nick">운영자</span>방송 시작! 🎉</div>
+            <div class="msg"><span class="nick nick-a">레인저K</span>신캐 기대</div>
+            <div class="msg"><span class="nick nick-b">디센던트팬</span>화질 깔끔하다<a class="report" href="#">신고</a></div>
+            <div class="msg me"><span class="nick nick-d">나</span>🔥🔥</div>
+          </div>
+          <div class="react-bar">
+            <button class="react">❤️</button><button class="react">😆</button><button class="react">👏</button>
+            <button class="donate">후원</button>
+          </div>
+          <div class="ft"><input placeholder="채팅 입력" aria-label="채팅 입력"><button class="nx-btn sm">전송</button></div>
+        </div>
+      </div>
+
+      <!-- 도네이션 타일 -->
+      <div class="b-donate b-tile nx-card">
+        <div><span class="sec-h" style="color:rgba(255,255,255,.8)">넥슨캐시 후원</span>
+        <div class="big">₩ 1,000~</div></div>
+        <p style="font-size:13px;opacity:.9">후원 메시지가 방송 화면에 노출됩니다</p>
+        <button class="nx-btn" style="background:#fff;color:var(--pc-900)">지금 후원하기</button>
+      </div>
+
+      <!-- 방송 정보 -->
+      <div class="b-info b-tile nx-card">
+        <span class="sec-h">지금 방송</span>
+        <h3 style="font-size:16px">퍼스트 디센던트 신규 시즌 쇼케이스</h3>
+        <p class="muted" style="font-size:13px">넥슨 공식 · 게임</p>
+        <button class="nx-btn outline sm" style="align-self:flex-start">+ 팔로우</button>
+      </div>
+
+      <!-- 클립 -->
+      <div class="b-clip b-tile nx-card">
+        <span class="sec-h">인기 클립</span>
+        <div class="clip-row"><div class="clip-thumb"></div><div class="clip-thumb"></div></div>
+      </div>
+
+      <!-- 편성표 -->
+      <div class="b-sched b-tile nx-card">
+        <span class="sec-h">오늘 편성</span>
+        <p style="font-size:14px"><b>19:00</b> 신규 캐릭터 공개</p>
+        <p style="font-size:14px" class="muted"><b>20:30</b> 시청자 참여 룰렛</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 샘플 C : 분할 스크린 ============ -->
+<section class="sample" id="C" role="tabpanel">
+  <div class="split">
+    <!-- 좌: 플레이어 -->
+    <div class="left">
+      <div class="player">
+        <div class="scene"></div>
+        <div class="topbar"><span class="nx-tag tag-live">● LIVE</span><span class="viewers"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg> 12,840</span></div>
+        <button class="play" aria-label="재생"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></button>
+        <div class="mute-coach" id="muteC">🔇 소리가 꺼져 있어요 — 탭하여 켜기</div>
+        <div class="botbar"><button class="icon-btn" aria-label="음소거 해제"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 9v6h4l5 5V4L8 9H4z"/></svg></button><span class="sp"></span><span class="quality">1080p ▾</span><button class="icon-btn" aria-label="전체화면"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+      </div>
+      <div class="title-row">
+        <div class="av"></div>
+        <div style="flex:1"><h2 style="font-size:19px">퍼스트 디센던트 신규 시즌 쇼케이스</h2>
+        <p class="muted" style="font-size:13px">넥슨 공식 · 게임 · 한국어</p></div>
+        <button class="nx-btn">+ 팔로우</button>
+      </div>
+      <div class="stat">
+        <div><div class="n">12,840</div><div class="muted" style="font-size:12px">시청자</div></div>
+        <div><div class="n">3,201</div><div class="muted" style="font-size:12px">채팅 참여</div></div>
+        <div><div class="n">486</div><div class="muted" style="font-size:12px">후원</div></div>
+      </div>
+    </div>
+
+    <!-- 우: 탭 패널 (채팅 / 후원) -->
+    <div class="right">
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-c="chat">채팅</button>
+        <button role="tab" aria-selected="false" data-c="donate">후원</button>
+      </div>
+
+      <div class="pane on" data-c="chat">
+        <div class="chat" style="border:none;border-radius:0;flex:1">
+          <div class="pinned"><b>📌</b><span>19시 신규 캐릭터 공개 + 룰렛 이벤트</span></div>
+          <div class="body">
+            <div class="msg mod"><span class="nick">운영자</span>본 방송 곧 시작합니다</div>
+            <div class="msg"><span class="nick nick-a">레인저K</span>신캐 ㄷㄷ</div>
+            <div class="msg"><span class="nick nick-b">디센던트팬</span>닉네임 색 구분되니 읽기 편하네<a class="report" href="#">신고</a></div>
+            <div class="msg me"><span class="nick nick-d">나</span>기대됨 🔥</div>
+            <div class="msg"><span class="nick nick-c">초보시청자</span>후원은 오른쪽 탭에서 하면 되나요?<a class="report" href="#">신고</a></div>
+          </div>
+          <div class="react-bar">
+            <button class="react">❤️</button><button class="react">😆</button><button class="react">👏</button><button class="react">🎉</button>
+          </div>
+          <div class="ft"><input placeholder="채팅을 입력하세요" aria-label="채팅 입력"><button class="nx-btn sm">전송</button></div>
+        </div>
+      </div>
+
+      <div class="pane donate-pane" data-c="donate">
+        <span class="sec-h">넥슨캐시 후원</span>
+        <div class="amt">
+          <button>₩1,000</button><button>₩5,000</button><button>₩10,000</button>
+          <button>₩30,000</button><button>₩50,000</button><button>직접입력</button>
+        </div>
+        <input class="ft-input" placeholder="후원 메시지 (방송에 노출)" aria-label="후원 메시지"
+          style="height:42px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-family:inherit;font-size:14px">
+        <button class="donate" style="height:46px;justify-content:center;border-radius:8px;font-size:15px">❤️ 후원하기</button>
+        <p class="muted" style="font-size:12px">후원 시 닉네임과 메시지가 방송 화면에 표시됩니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="legend">
+  3종 모두 <b>NX Basic 1.0v 토큰 고정</b>(primary #0A74FF · 중립 bc · 텍스트 #17191C). 레이아웃만 비교 —
+  A 클래식 3분할 · B 벤토 그리드 · C 분할+탭. 공통으로 <b>검증된 페인포인트</b> 반영:
+  첫 진입 음소거 안내 · 채팅 시인성(닉네임 색·본인 강조) · 호버 신고 · 넥슨캐시 후원/리액션.
+</footer>
+
+<script>
+// 탭 바 A/B/C 전환
+document.querySelectorAll('#tab-bar button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#tab-bar button').forEach(function(x){x.setAttribute('aria-selected','false')});
+    b.setAttribute('aria-selected','true');
+    document.querySelectorAll('.sample').forEach(function(s){s.classList.remove('active')});
+    document.getElementById(b.dataset.t).classList.add('active');
+    window.scrollTo(0,0);
+  });
+});
+// 음소거 코치마크: 클릭 시 사라짐 (첫 상호작용 = 소리 켜기)
+document.querySelectorAll('.mute-coach').forEach(function(m){
+  m.addEventListener('click',function(){m.style.display='none'});
+});
+document.querySelectorAll('.player .botbar .icon-btn:first-child').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var coach=btn.closest('.player').querySelector('.mute-coach');
+    if(coach)coach.style.display='none';
+  });
+});
+// 샘플 C 탭(채팅/후원) 전환
+document.querySelectorAll('#C .tabs button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#C .tabs button').forEach(function(x){x.setAttribute('aria-selected','false')});
+    b.setAttribute('aria-selected','true');
+    document.querySelectorAll('#C .pane').forEach(function(p){p.classList.toggle('on',p.dataset.c===b.dataset.c)});
+  });
+});
+</script>
+</body>
+</html>
