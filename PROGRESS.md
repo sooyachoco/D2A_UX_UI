@@ -10,26 +10,26 @@
 
 | 항목 | 값 |
 |---|---|
-| **현재 단계** | Phase A — 사전 준비 |
-| **상태** | ⏳ 진행 중 |
-| **마지막 작업** | — |
-| **세션 체크포인트** | — |
-| **review_status** | — |
-| **다음 행동** | 아래 참조 |
+| **프로젝트** | NEXON Live (라이브 방송 시청·채팅·후원) |
+| **현재 단계** | Phase 0 — boilerplate-setup 완료, create-spec 직전 |
+| **상태** | 🔄 세션 체크포인트 (세션 재시작 대기) |
+| **디자인 시스템** | NX Basic 1.0v 고정 (`design_system=nxbasic`) |
+| **선택 디자인** | 샘플 A (사이드바+콘텐츠) — `design/samples.html` · `design/design-direction.md` |
+| **review_status** | ⏳ pending |
+| **다음 행동** | 세션 재시작 → `create-spec 실행해줘` |
 
-> 상태 값: ⏳ 진행 중 / ⏸️ 사용자 확인 대기 / 🔄 세션 체크포인트 / ✅ 완료
->
-> **review_status 값 규칙:**
-> - `—` : Phase 구현 미시작
-> - `⏳ pending` : 해당 Phase 소스 변경 있음, 리뷰 미실행 (run-phase Step 3-1이 설정)
-> - `✅ YYYY-MM-DD` : 리뷰 완료 날짜 (subagent-review Step 5가 설정)
-> - `N/A` : 해당 Phase 소스 변경 없음 (문서만 변경)
+> **⚠️ 세션 재시작 필요 이유**: 2026-06-25 운영 레이어 백필(scripts·`.claude/settings.json` hooks·`d2a-harness` MCP)을
+> 적용했으나, hooks·MCP 하네스는 **세션 시작 시 로드**된다. 현재 세션엔 미발효 상태이므로,
+> 강제 게이트(hook proof-of-work · MCP `ut:`)를 실제로 걸려면 **새 세션에서 create-spec**을 진행해야 한다.
 
 ### 👉 다음에 할 일
 
 ```
-채팅에 입력: @SETUP.md 프로젝트 셋팅해줘
+새 채팅에 입력: create-spec 실행해줘
 ```
+- create-spec 이 spec.md → plan.md → tasks.md 생성 + Step 2.7 UI 프로토타입 + Step 2.7.5 AI UT 자동 게이트 수행
+- 단일 source 근거: `refs/ux-research/` 7종 (페르소나·여정, 🟢 검증 = 5월 쇼케이스 설문 S5)
+- 디자인: `design/design-direction.md` (NX Basic 토큰 + 샘플 A 레이아웃)
 
 ---
 
@@ -37,7 +37,19 @@
 
 | 날짜 | 단계 | 내용 | 세션 |
 |---|---|---|---|
-| — | — | — | — |
+| 2026-06-25 | 리서치 | 실제 NEXON 리서치 MCP(Notion) 연결 → ux-research 7종 🟢검증 주입 + `/ux-research-sync` 스킬 | `8c2e619` |
+| 2026-06-25 | 셋업 | boilerplate-setup(경량) Stage 0~1 + NX Basic 샘플 3종 → 샘플 A 확정 | `0cbf0e0` |
+| 2026-06-25 | 디자인 | 샘플 A 하단 피드(라이브·크리에이터·클립) + 신고 접근성 | `7995c02` |
+| 2026-06-25 | 운영 | 운영 레이어 백필(scripts·hooks·스킬 22·specs 템플릿·tests) + Slack webhook 시크릿 제거 | `f40ffbe` |
+
+---
+
+## 미적용 / 후속 (Notion AI 페이지 플로우 기준)
+
+- [ ] create-spec → STEP 0 점검 · spec/plan/tasks · Step 2.7 프로토타입 · Step 2.7.5 AI UT 자동
+- [ ] frontend 프로토타입 + ai-usability-test 실행 → `ut:` done 게이트 검증
+- [ ] (선택) §3.5 확정 락 — 샘플 A git 태그 + PNG 스냅샷
+- [ ] (보안 후속) 본체 notify-slack.sh Webhook 로테이션 (task chip 발행됨)
 
 ---
 
