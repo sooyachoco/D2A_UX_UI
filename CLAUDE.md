@@ -471,6 +471,7 @@ MCP 실패 시에만 `/run-phase` 스킬에 명시된 폴백을 사용한다.
 | `/analyze-integrations` | 외부 연동 시스템 분석 |
 | `/run-spike` | 기술 검증 PoC 실행 |
 | `/design-research` | 디자인 시스템 리서치 워크플로 |
+| `/ux-research-sync` | 실제 리서치 데이터를 MCP(Notion 등)로 연결 → 신뢰도 3단계(🟢검증/🟢인접/🔵가설)로 ux-research 7종 주입 → UX/UI 단계 투입. ui-design-workflow·ai-usability-test의 단일 source 공급 |
 | `/ui-design-workflow` | PRD→0단계 게이트→3안 발산→확정 락→상태설계→자가점검→0-드리프트 전사→AI UT 게이트 (v1.6.0+) |
 | `/ai-usability-test` | Playwright + 3 페르소나 + Nielsen 휴리스틱. D2A storageState 자동 통합, MCP `ut:` done 기준 |
 | `/generate-context-docs` | 디렉토리별 CONTEXT.md 자동 생성 |
