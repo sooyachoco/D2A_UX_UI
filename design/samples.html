@@ -102,9 +102,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .chat .ft{padding:10px 12px;border-top:1px solid var(--border-soft);display:flex;gap:8px;align-items:center}
 .chat .ft input{flex:1;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:14px;font-family:inherit}
 .chat .ft input:focus{outline:2px solid var(--pc-400);border-color:var(--primary)}
-.msg .report{visibility:hidden;font-size:11px;color:var(--bc-600);margin-left:6px}
-.msg:hover .report{visibility:visible}
-.msg .report:hover{color:var(--danger);text-decoration:underline}
+.msg .report{opacity:0;font-size:11px;color:var(--bc-600);margin-left:6px;transition:opacity .12s}
+.msg:hover .report,.msg:focus-within .report,.msg .report:focus{opacity:1}
+.msg .report:hover,.msg .report:focus-visible{color:var(--danger);text-decoration:underline;outline:2px solid var(--pc-400);outline-offset:1px;border-radius:3px}
 
 /* 검증 페인포인트 ④ 인터랙션·도네이션 바 */
 .react-bar{display:flex;gap:8px;align-items:center;padding:10px 12px;border-top:1px solid var(--border-soft);flex-wrap:wrap}
@@ -132,6 +132,48 @@ h1,h2,h3{letter-spacing:-.02em;color:var(--text-strong)}
 #A .meta .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff8a3d,#ff3d77);flex:none}
 #A .meta h2{font-size:17px}
 #A .chips{display:flex;gap:8px;margin:14px 0 4px;flex-wrap:wrap}
+
+/* ---- 샘플 A 하단 피드 (지금 방송 중 / 추천 크리에이터 / 인기 클립) ---- */
+#A .feed{margin-top:30px;display:flex;flex-direction:column;gap:32px}
+#A .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+#A .sec-head h3{font-size:18px;font-weight:800}
+#A .sec-head h3 .cnt{font-size:13px;color:var(--text-sub);font-weight:600;margin-left:8px}
+#A .sec-head .more{font-size:13px;color:var(--primary);font-weight:700}
+#A .sec-head .more:hover{text-decoration:underline}
+#A .sort{display:flex;gap:6px;margin-bottom:14px}
+#A .sort button{height:30px;padding:0 12px;border-radius:15px;font-size:12px;font-weight:700;color:var(--text-sub);background:var(--bc-100)}
+#A .sort button.on{background:var(--primary);color:#fff}
+.live-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.s-card{cursor:pointer;border-radius:var(--radius-lg);transition:transform .15s}
+.s-card:hover{transform:translateY(-3px)}
+.s-card:focus-visible{outline:2px solid var(--pc-400);outline-offset:3px}
+.s-thumb{aspect-ratio:16/9;border-radius:var(--radius-lg);overflow:hidden;position:relative;
+  background:linear-gradient(135deg,#16263f,#0a1424);display:flex;align-items:center;justify-content:center;font-size:34px}
+.s-thumb .vc{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.66);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;display:flex;gap:4px;align-items:center}
+.s-thumb .lv{position:absolute;left:8px;top:8px}
+.s-meta{display:flex;gap:10px;margin-top:9px}
+.s-meta .av{width:34px;height:34px;border-radius:50%;flex:none}
+.s-title{font-size:14px;font-weight:700;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.s-card:hover .s-title{color:var(--primary)}
+.s-ch{font-size:12px;color:var(--text-sub);margin-top:3px}
+.s-tags{margin-top:6px;display:flex;gap:5px;flex-wrap:wrap}
+.cr-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.cr{flex:0 0 84px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:12px;cursor:pointer;transition:background .15s}
+.cr:hover{background:var(--pc-100)}
+.cr:focus-visible{outline:2px solid var(--pc-400)}
+.cr .ring{width:60px;height:60px;border-radius:50%;padding:3px;background:var(--danger);flex:none}
+.cr .ring.off{background:var(--bc-200)}
+.cr .ava{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:19px}
+.cr .nm{font-size:11px;font-weight:700;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cr .gm{font-size:10px;color:var(--text-sub);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.clip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
+.clip{cursor:pointer}
+.clip .ct{aspect-ratio:16/9;border-radius:var(--radius-lg);background:linear-gradient(135deg,#1d2b16,#0a1424);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px}
+.clip .dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.66);color:#fff;font-size:11px;font-weight:700;padding:2px 6px;border-radius:4px}
+.clip:focus-visible{outline:2px solid var(--pc-400);outline-offset:3px;border-radius:var(--radius-lg)}
+.clip .ct-title{font-size:13px;font-weight:600;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.clip:hover .ct-title{color:var(--primary)}
+.clip .cm{font-size:11px;color:var(--text-sub);margin-top:2px}
 
 /* ============================================================
    샘플 B — 벤토 그리드 (player hero + 타일 모자이크)
@@ -231,6 +273,59 @@ footer.legend{max-width:1440px;margin:0 auto;padding:18px 24px;color:var(--bc-70
         <span class="nx-tag tag-soft"># 신규시즌</span>
         <span class="nx-tag tag-soft"># 디센던트</span>
         <span class="nx-tag tag-soft"># 공식방송</span>
+      </div>
+
+      <!-- 하단 피드: 재방문 동선 (refs/ux-research JOURNEY 5단계 재진입 경로 대응) -->
+      <div class="feed">
+
+        <!-- 지금 방송 중 -->
+        <section class="sec" aria-labelledby="live-h">
+          <div class="sec-head"><h3 id="live-h">지금 방송 중 <span class="cnt">12개</span></h3><a class="more" tabindex="0" role="button">전체 보기 →</a></div>
+          <div class="sort"><button class="on">추천순</button><button>시청자순</button><button>최신순</button></div>
+          <div class="live-grid">
+            <article class="s-card" tabindex="0">
+              <div class="s-thumb">🎮<span class="nx-tag tag-live lv">● LIVE</span><span class="vc"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>12,840</span></div>
+              <div class="s-meta"><div class="av" style="background:linear-gradient(135deg,#ff8a3d,#ff3d77)"></div><div><div class="s-title">퍼스트 디센던트 신규 시즌 쇼케이스</div><div class="s-ch">넥슨 공식</div><div class="s-tags"><span class="nx-tag tag-soft">디센던트</span></div></div></div>
+            </article>
+            <article class="s-card" tabindex="0">
+              <div class="s-thumb">⚽<span class="nx-tag tag-live lv">● LIVE</span><span class="vc">8,210</span></div>
+              <div class="s-meta"><div class="av" style="background:linear-gradient(135deg,#0a74ff,#0056c7)"></div><div><div class="s-title">FC온라인 랭커 매치 — 최강자전 8강</div><div class="s-ch">FC프로리그</div><div class="s-tags"><span class="nx-tag tag-soft">FC온라인</span></div></div></div>
+            </article>
+            <article class="s-card" tabindex="0">
+              <div class="s-thumb">🍁<span class="nx-tag tag-live lv">● LIVE</span><span class="vc">5,934</span></div>
+              <div class="s-meta"><div class="av" style="background:linear-gradient(135deg,#59e387,#0f9d58)"></div><div><div class="s-title">메이플스토리 신규 직업 보스 레이드 첫 공략</div><div class="s-ch">단풍이생활</div><div class="s-tags"><span class="nx-tag tag-soft">메이플</span></div></div></div>
+            </article>
+            <article class="s-card" tabindex="0">
+              <div class="s-thumb">🏎️<span class="nx-tag tag-live lv">● LIVE</span><span class="vc">3,512</span></div>
+              <div class="s-meta"><div class="av" style="background:linear-gradient(135deg,#8a3dff,#3d6bff)"></div><div><div class="s-title">카트라이더 드리프트 광속 토템 풀무장 8연승</div><div class="s-ch">DRIFT김선수</div><div class="s-tags"><span class="nx-tag tag-soft">카트</span></div></div></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- 추천 크리에이터 -->
+        <section class="sec" aria-labelledby="cr-h">
+          <div class="sec-head"><h3 id="cr-h">추천 크리에이터</h3><a class="more" tabindex="0" role="button">더 보기 →</a></div>
+          <div class="cr-strip" role="list">
+            <div class="cr" tabindex="0" role="listitem"><div class="ring"><div class="ava" style="background:linear-gradient(135deg,#ff8a3d,#ff3d77)">디</div></div><span class="nm">디센던트마스터</span><span class="gm">● 디센던트</span></div>
+            <div class="cr" tabindex="0" role="listitem"><div class="ring"><div class="ava" style="background:linear-gradient(135deg,#0a74ff,#0056c7)">FC</div></div><span class="nm">FC프로리그</span><span class="gm">● FC온라인</span></div>
+            <div class="cr" tabindex="0" role="listitem"><div class="ring off"><div class="ava" style="background:linear-gradient(135deg,#59e387,#0f9d58)">단</div></div><span class="nm">단풍이생활</span><span class="gm">메이플</span></div>
+            <div class="cr" tabindex="0" role="listitem"><div class="ring"><div class="ava" style="background:linear-gradient(135deg,#8a3dff,#3d6bff)">김</div></div><span class="nm">DRIFT김선수</span><span class="gm">● 카트</span></div>
+            <div class="cr" tabindex="0" role="listitem"><div class="ring off"><div class="ava" style="background:linear-gradient(135deg,#ef5d5d,#b5436b)">던</div></div><span class="nm">던파장인</span><span class="gm">던전앤파이터</span></div>
+            <div class="cr" tabindex="0" role="listitem"><div class="ring"><div class="ava" style="background:linear-gradient(135deg,#ffbb00,#ff8a3d)">서</div></div><span class="nm">서든1티어</span><span class="gm">● 서든어택</span></div>
+          </div>
+        </section>
+
+        <!-- 인기 클립 -->
+        <section class="sec" aria-labelledby="clip-h">
+          <div class="sec-head"><h3 id="clip-h">인기 클립 <span class="cnt">24시간</span></h3><a class="more" tabindex="0" role="button">클립 더 보기 →</a></div>
+          <div class="clip-grid">
+            <article class="clip" tabindex="0"><div class="ct">🎯<span class="dur">0:48</span></div><div class="ct-title">역대급 보스 막타 장면</div><div class="cm">디센던트마스터 · 조회 12.4만</div></article>
+            <article class="clip" tabindex="0"><div class="ct">⚽<span class="dur">1:12</span></div><div class="ct-title">경기 종료 직전 결승골</div><div class="cm">FC프로리그 · 조회 9.1만</div></article>
+            <article class="clip" tabindex="0"><div class="ct">💥<span class="dur">0:33</span></div><div class="ct-title">신규 직업 원콤 클리어</div><div class="cm">단풍이생활 · 조회 7.7만</div></article>
+            <article class="clip" tabindex="0"><div class="ct">🏁<span class="dur">0:57</span></div><div class="ct-title">막판 역전 광속 드리프트</div><div class="cm">DRIFT김선수 · 조회 6.2만</div></article>
+          </div>
+        </section>
+
       </div>
     </main>
 
