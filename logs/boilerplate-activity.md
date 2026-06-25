@@ -4,3 +4,5 @@
 
 ## 2026-06-25
 - SETUP: NEXON Live 경량 셋업 시작 (DESIGN_SYSTEM=nxbasic, in-place)
+- `2026-06-25 11:09:11` **[SETUP]** 운영 레이어 백필
+  - scripts 29 + hooks + 스킬 22 + specs 템플릿 동기화

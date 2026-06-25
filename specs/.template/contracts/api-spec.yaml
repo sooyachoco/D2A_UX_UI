@@ -1,0 +1,45 @@
+openapi: "3.0.3"
+info:
+  title: "{기능명} API"
+  version: "0.1.0"
+  description: "{기능 설명}"
+
+servers:
+  - url: http://localhost:8000
+    description: 로컬 개발
+
+paths:
+  /api/v1/example:
+    get:
+      summary: "{엔드포인트 설명}"
+      operationId: getExample
+      tags:
+        - example
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Example"
+        "401":
+          description: 인증 필요
+
+components:
+  schemas:
+    Example:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time

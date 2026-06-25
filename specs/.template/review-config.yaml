@@ -1,0 +1,47 @@
+# .review-config.yaml
+# ─────────────────────────────────────────────────────────
+# boilerplate-setup Stage 4 완료 후 constitution.md를 기반으로 자동 생성된다.
+# 수동 수정 가능 — 변경 시 다음 리뷰부터 반영됨.
+# 이 파일이 없으면 기본값(6개 전체 활성)으로 동작한다.
+# ─────────────────────────────────────────────────────────
+
+# ── 프로젝트 프로필 ──
+# constitution.md에서 추출한 프로젝트 특성.
+# subagent-review가 이 정보를 읽어 리뷰어 프롬프트에 주입한다.
+project:
+  type: full-stack          # api-only | spa | full-stack | cli | library | data-pipeline
+  domain: general           # general | fintech | healthcare | gaming | children | enterprise
+  backend: Python/FastAPI   # "none" → 백엔드 없음
+  frontend: React/TypeScript # "none" → 프론트엔드 없음
+  database: PostgreSQL      # "none" → DB 없음
+
+# ── 코어 리뷰어 활성화 ──
+# false로 설정하면 해당 리뷰어를 프로젝트 전체에서 비활성화한다.
+# Phase별 파일 유형 필터링보다 우선한다.
+reviewers:
+  security: true
+  performance: true
+  architecture: true
+  correctness: true
+  spec_fidelity: true
+  accessibility: true
+  runtime_compatibility: true
+
+# ── 도메인 특화 리뷰어 (선택) ──
+# 프로젝트 도메인에 따라 자동 제안되거나 사용자가 직접 추가할 수 있다.
+# 코어 리뷰어와 동일한 심각도 체계(CRITICAL/HIGH/MEDIUM/LOW)를 사용한다.
+custom_reviewers: []
+# 예시:
+# - name: Payment Safety
+#   role: "시니어 결제 시스템 엔지니어"
+#   description: "금액 계산, 이중 과금 방지, 감사 로깅 검증"
+#   checklist:
+#     - "금액 계산: Decimal/BigInt 사용, 부동소수점 금지"
+#     - "이중 과금 방지: 멱등성 키 필수, 재시도 안전성"
+#     - "감사 로깅: 모든 금액 변경 이력 기록"
+#     - "환불/취소: 원본 거래 참조, 부분 환불 정확성"
+#   severity:
+#     critical: "이중 과금 가능, 금액 계산 오류"
+#     high: "감사 로그 누락, 멱등성 미보장"
+#     medium: "통화 단위 하드코딩"
+#     low: "금액 포맷팅 개선"

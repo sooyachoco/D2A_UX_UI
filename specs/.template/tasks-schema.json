@@ -1,0 +1,41 @@
+{
+  "_comment": "tasks.md 태스크 필드 검증 스키마 — validate-tasks.sh 가 참조",
+  "task_id_pattern": "^T\\d+$",
+  "status_values": ["☐", "☑"],
+  "done_prefix_allowed": [
+    "pytest",
+    "npm run build",
+    "npm run test",
+    "npm test",
+    "yarn build",
+    "yarn test",
+    "pnpm build",
+    "pnpm test",
+    "curl",
+    "파일",
+    "file",
+    "grep",
+    "pattern"
+  ],
+  "phase_rules": {
+    "phase_0": {
+      "description": "UI 프로토타입 — boilerplate-setup Stage 1.5에서 완료",
+      "required_fields": ["status"],
+      "optional_fields": []
+    },
+    "phase_0_5": {
+      "description": "외부 연동 검증",
+      "required_fields": ["status", "read", "done"],
+      "optional_fields": ["write", "deps", "skill", "parallel", "no-read"]
+    },
+    "phase_1_plus": {
+      "description": "구현 Phase",
+      "required_fields": ["status", "read", "done"],
+      "optional_fields": ["write", "deps", "skill", "parallel", "no-read"]
+    }
+  },
+  "warnings": {
+    "missing_write": "write 필드 없음 — skill 필드로 대체되거나 read-only 태스크인지 확인",
+    "missing_deps": "deps 필드 없음 — 첫 태스크이거나 독립 태스크임을 확인"
+  }
+}

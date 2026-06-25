@@ -1,0 +1,133 @@
+{
+  "enableAllProjectMcpServers": true,
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Edit",
+      "Write"
+    ],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      ".claude"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/stop-hook.sh ] && bash scripts/stop-hook.sh 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f scripts/pre-write-hook.sh ]; then bash scripts/pre-write-hook.sh 2>&1; fi"
+          },
+          {
+            "type": "command",
+            "command": "[ -f scripts/pre-instruction-change-check.sh ] && bash scripts/pre-instruction-change-check.sh 2>&1 || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f scripts/pre-bash-hook.sh ]; then bash scripts/pre-bash-hook.sh 2>&1; fi"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-tool-hook.sh ] && bash scripts/post-tool-hook.sh 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-bash-hook.sh ] && bash scripts/post-bash-hook.sh 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-agent-hook.sh ] && bash scripts/post-agent-hook.sh 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-skill-hook.sh ] && bash scripts/post-skill-hook.sh 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__d2a-harness__submit_task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-submit-hook.sh ] && bash scripts/post-submit-hook.sh || true"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__d2a-harness__update_state",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-mcp-hook.sh ] && bash scripts/post-mcp-hook.sh 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__d2a-harness__check_phase_gate",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-mcp-hook.sh ] && bash scripts/post-mcp-hook.sh 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__d2a-harness__get_next_task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-mcp-hook.sh ] && bash scripts/post-mcp-hook.sh 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__d2a-harness__rollback_to_checkpoint",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f scripts/post-mcp-hook.sh ] && bash scripts/post-mcp-hook.sh 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
